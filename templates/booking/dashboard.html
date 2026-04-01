@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+    <div class="px-4 py-8 sm:px-0">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Your Travel Dashboard</h1>
+
+        {% if bookings %}
+        <div class="bg-white shadow overflow-hidden sm:rounded-md border border-gray-200">
+            <ul class="divide-y divide-gray-200">
+                {% for booking in bookings %}
+                <li>
+                    <div class="px-4 py-4 flex items-center sm:px-6 hover:bg-gray-50 transition-colors duration-150">
+                        <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div class="truncate">
+                                <div class="flex text-sm">
+                                    <p class="font-medium text-brand-600 truncate">{{ booking.destination.title }}</p>
+                                    <p class="ml-1 flex-shrink-0 font-normal text-gray-500">
+                                        in {{ booking.destination.location }}
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex">
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        Booking Date: {{ booking.booking_date|date:"M d, Y" }}
+                                    </div>
+                                    <div class="ml-6 flex items-center text-sm text-gray-500">
+                                        {{ booking.number_of_people }} Travelers
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5 flex flex-col items-end">
+                                <div class="text-lg font-bold text-gray-900">${{ booking.total_price }}</div>
+                                {% if booking.status == 'Pending' %}
+                                    <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Pending</span>
+                                {% elif booking.status == 'Confirmed' %}
+                                    <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Confirmed</span>
+                                {% else %}
+                                    <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Cancelled</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No bookings</h3>
+            <p class="mt-1 text-sm text-gray-500">You haven't booked any trips yet.</p>
+            <div class="mt-6">
+                <a href="{% url 'destination_list' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-600 hover:bg-brand-700">
+                    Find a Destination
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
